@@ -1,8 +1,10 @@
 // import modules
 
 import express from 'express'
+import {collectibles} from './data/collectibles.js'
 
 // create Express app
+
 
 const app = express()
 
@@ -29,4 +31,27 @@ app.listen(3000, function() {
 
 app.get('/', function(req, res) {
   res.send('<h1>hello, friend</h1>')
+})
+
+
+app.get('/greetings/:username', function(req, res) {
+  res.send(`<h1>whats up ${req.params.username}</h1>`)
+})
+
+app.get('/roll/:number', function(req, res) {
+  !isNaN(req.params.number) ? 
+    res.send(`<h1>You rolled a ${req.params.number}</h1>`)
+    :
+    res.send(`<h1>You must specify a number</h1>`)
+  
+})
+
+app.get('/collectibles/:index', function(req, res) {
+  let item = collectibles[req.params.index]
+  if (item){
+    res.send(`So, you want the ${item.name}? For ${item.price}, it can be yours!`)
+  }
+  else{
+    res.send(`This item is not yet in stock. Check back soon!`)
+  }
 })
