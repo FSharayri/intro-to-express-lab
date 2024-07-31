@@ -58,31 +58,18 @@ app.get('/collectibles/:index', function(req, res) {
 
 
 app.get('/shoes', function(req,res){
-  let filterMinPrice = false
-  let filterMaxPrice = false
-  let filterType = false
-  if (req.query.minPrice) filterMinPrice=true
-  if (req.query.maxPrice) filterMaxPrice=true
-  if (req.query.type) filterType=true
-
+  let filterMinPrice = true
+  let filterMaxPrice = true
+  let filterType = true
   let filteredShoes = shoes.filter(shoe=>{
-    
-    if (filterMinPrice&& filterMaxPrice&& filterType)
-      return (shoe.price> req.query.minPrice  && shoe.price < req.query.maxPrice&& shoe.type===req.query.type)
-    else if (filterMaxPrice&&filterMinPrice)
-      return (shoe.price> req.query.minPrice  && shoe.price < req.query.maxPrice)
-    else if (filterMaxPrice&&filterType)
-      return (shoe.price < req.query.maxPrice&& shoe.type===req.query.type)
-    else if (filterMinPrice&&filterType)
-      return (shoe.price > req.query.minPrice&& shoe.type===req.query.type)
-    else if (filterMaxPrice) 
-      return shoe.price < req.query.maxPrice
-    else if (filterMinPrice) 
-      return shoe.price > req.query.minPrice
-    else if (filterType) 
-      return shoe.type === req.query.type
-    else 
-      return true
+    if (req.query['min-price']){
+      filterMinPrice = shoe.price > req.query['min-price']}
+    if (req.query['max-price']){
+      filterMaxPrice = shoe.price < req.query['max-price']}
+    if (req.query['type']) {
+      filterType = shoe.type===req.query['type']}
+    return (filterMaxPrice && filterMinPrice && filterType)
   })
   res.send(filteredShoes)
 })
+
