@@ -39,9 +39,13 @@ app.get('/greetings/:username', function(req, res) {
 })
 
 app.get('/roll/:number', function(req, res) {
-  !isNaN(req.params.number) ? 
-    res.send(`<h1>You rolled a ${req.params.number}</h1>`)
-    :
+  let roll
+  if (!isNaN(req.params.number)){ 
+    //made the ceil since its a 'roll' and dice rolls have no zero
+    roll = Math.ceil(Math.random()*req.params.number)
+    res.send(`<h1>You rolled a ${roll}</h1>`)
+  }
+  else
     res.send(`<h1>You must specify a number</h1>`)
   
 })
